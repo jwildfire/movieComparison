@@ -1,3 +1,6 @@
+### Code modified from Sebastian Raschka's tutorial 
+### located here: http://sebastianraschka.com/Articles/heatmaps_in_r.html
+
 #########################################################
 ### A) Installing and loading required packages
 #########################################################
