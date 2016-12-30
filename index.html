@@ -16,7 +16,6 @@
 <body>
   <h2>Movie Comparison</h2>
   <div class="chart"></div>
-  <div class="summaryTable"></div>
 </body>
 </html>
 
@@ -24,38 +23,37 @@
 $(document).ready(function() {
 
   //constants and selectors
-  var public_spreadsheet_url = '1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU';
+  var public_spreadsheet_url = 
+  '1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU';
 
   //Histogram settings
-  var histSettings = {
+  var dotsSettings = {
     "width":"800",
     "height": "1000",
     resizable:false,
     "x":{
       "label":"Rating",
-      "type":"ordinal",
-      "column":"Rating",
-      "domain": d3.range(0,10.5,0.5).map(function(d){return d3.format("0.1f")(d)+""})
+      "type":"linear",
+      "column":"score",
+   //   "domain": d3.range(1,5,1).map(function(d){return d3.format("0.0f")(d)+""})
     },
     "y":{
-      "type":"linear",
-      "label":"# of Movies",
-      "column":null
+      "type":"ordinal",
+      "label":"Movie",
+      "column":"movie"
     },
     "marks":[
       {
-        "type":"bar",
-        "per":["Rating_n"],
-        "summarizeY":"count",
-        "attributes":{"fill":"white","stroke":"black"}
+        "type":"line",
+        "per":["movie"],
+        "attributes":{"fill":"black","stroke":"black", "fill-opacity":0.2}
       },
       {
-        "type":"bar",
-        "per":["Rating_n"],
-        "summarizeY":"count",
-        "values": {"personMatch":[true]},
-        "attributes":{"fill":"green","stroke":"transparent"}
-      }
+        "type":"circle",
+        "per":["movie"],
+        "summarizeX":"mean",
+        "attributes":{"fill":"red","stroke":"red", "fill-opacity":0.9}
+      },
     ],
     "gridlines":"y"
   };
@@ -67,12 +65,20 @@ $(document).ready(function() {
   function prepData(data){
 
     var longData = []
-    var movies = d3.set(data).values()
+    var movies = Object.getOwnPropertyNames(data[1]).slice(2)
+
     console.log(movies)
     data.forEach(function(d){
-
+      console.log(d)
+      movies.forEach(function(m){
+        longData.push({
+          person:d["Who are you? "],
+          movie:m,
+          score:+d[m]
+        })
+      })
     })
-
+    longData = longData.filter(function(d){return d.score>=1})
     return longData;
   }
 
@@ -80,15 +86,15 @@ $(document).ready(function() {
     console.log(data)
     //prepare the data
     var longData = prepData(data)
-
+    console.log(longData)
     //initialize the histogram
-   // hist.init();
+    dots.init(longData);
 
     //initialize dataTables
    // drawTable(clean)
   }
 
-//  var hist = webCharts.createChart(".hist", histSettings,null);
+  var dots = webCharts.createChart(".chart", dotsSettings,null);
   Tabletop.init({ 
     key: public_spreadsheet_url,
     callback: initPage,
