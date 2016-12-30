@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<head>
+  <title>Movie Reviews</title>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.4.3/tabletop.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type='text/javascript' src='http://graphics.rhoworld.com/src/webcharts/webcharts.v1.6.0.js'></script>
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">  
+  <link rel="stylesheet" href="https://graphics.rhoworld.com/src/webcharts/webcharts.v1.4.0.css">
+  <link rel="stylesheet" type="text/css" href="movies.css">
+</head>
+
+<html>
+<body>
+  <h2>Penthouse Movies</h2>
+  <div class="chart"></div>
+  <div class="summaryTable"></div>
+</body>
+</html>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+  //constants and selectors
+  var public_spreadsheet_url = '1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU';
+
+  //Histogram settings
+  var histSettings = {
+    "width":"800",
+    "height": "1000",
+    resizable:false,
+    "x":{
+      "label":"Rating",
+      "type":"ordinal",
+      "column":"Rating",
+      "domain": d3.range(0,10.5,0.5).map(function(d){return d3.format("0.1f")(d)+""})
+    },
+    "y":{
+      "type":"linear",
+      "label":"# of Movies",
+      "column":null
+    },
+    "marks":[
+      {
+        "type":"bar",
+        "per":["Rating_n"],
+        "summarizeY":"count",
+        "attributes":{"fill":"white","stroke":"black"}
+      },
+      {
+        "type":"bar",
+        "per":["Rating_n"],
+        "summarizeY":"count",
+        "values": {"personMatch":[true]},
+        "attributes":{"fill":"green","stroke":"transparent"}
+      }
+    ],
+    "gridlines":"y"
+  };
+
+  ///////////////
+  // Functions //
+  ///////////////
+
+  function prepData(data){
+
+    var longData = []
+    var movies = d3.set(data).values()
+    console.log(movies)
+    data.forEach(function(d){
+
+    })
+
+    return longData;
+  }
+
+  function initPage(data, tabletop){
+    console.log(data)
+    //prepare the data
+    var longData = prepData(data)
+
+    //initialize the histogram
+   // hist.init();
+
+    //initialize dataTables
+   // drawTable(clean)
+  }
+
+//  var hist = webCharts.createChart(".hist", histSettings,null);
+  Tabletop.init({ 
+    key: public_spreadsheet_url,
+    callback: initPage,
+    simpleSheet: true 
+  })
+})
+
+</script>
+
+
