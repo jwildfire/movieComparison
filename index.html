@@ -24,63 +24,91 @@
   <h4>Hierarchical Clustering</h4>
   <p> First thing, here is a quick heatmap (<a href="cluster/PHMovies.png">pdf</a>, <a href="cluster/PHMovies.R">R code</a>). The R code was adapted from this <a href="http://sebastianraschka.com/Articles/heatmaps_in_r.html"> nice tutorial.</a></p>
   <img src="cluster/PHMovies.png" width=1000px>
+  
+  <h4>Movie Rankings</h4>
+  <p>
+  This chart shows which movies were the highest rated. You can click a movie to see what everyone gave it. Created with <a href="https://github.com/RhoInc/Webcharts">webcharts</a></p>
+  <div id="avgRankChart"></div>
 
   <p> More stuff coming someday (?) ... </p>
-  
+
+
 </body>
 </html>
 
 <script type="text/javascript">
 $(document).ready(function() {
 
-  //constants and selectors
+  //data URL
   var public_spreadsheet_url = 
   '1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU';
-
-  //Histogram settings
-  var dotsSettings = {
-    "width":"800",
-    "height": "1000",
+  
+  ////////////////////////////////
+  //average movie rankings chart
+  ////////////////////////////////
+  var avgRankSettings = {
+    "width":600,
+    "height":800,
     resizable:false,
     "x":{
-      "label":"Rating",
+      "label":"Average Rating with Range",
       "type":"linear",
       "column":"score",
-   //   "domain": d3.range(1,5,1).map(function(d){return d3.format("0.0f")(d)+""})
+      "format":"0.1f"
     },
     "y":{
       "type":"ordinal",
-      "label":"Movie",
-      "column":"movie"
+      "label":"",
+      "column":"movie",
+      "sort":"total-descending"
     },
+    "margin":{},
     "marks":[
-      {
-        "type":"line",
-        "per":["movie"],
-        "attributes":{"fill":"black","stroke":"black", "fill-opacity":0.2}
-      },
       {
         "type":"circle",
         "per":["movie"],
         "summarizeX":"mean",
-        "attributes":{"fill":"red","stroke":"red", "fill-opacity":0.9}
+        "attributes":{"fill":"red","stroke":"black", "fill-opacity":0.9}
       },
-    ],
-    "gridlines":"y"
+      {
+        "type":"text",
+        "per":["movie"],
+        "summarizeX":"mean",
+        "text":"$x",
+        "attributes":{"text-anchor":"start","dx":"10", "alignment-baseline":"middle"}
+      },
+      {
+        "type":"line",
+        "per":["movie"],
+        "attributes":{"stroke-opacity":0.2, "stroke-dasharray":"3 3", "stroke":"#888"}
+      }
+    ]
   };
 
-  ///////////////
-  // Functions //
-  ///////////////
+  function axisLabels(){
+    console.log(this)
+    var chart = this;
+    var y_labels = this.svg
+    .select(".y.axis")
+    .selectAll(".tick text")
+    .text(function(d){
+      var count = chart.raw_data.filter(function(e){return d==e.movie}).length
+      return d +" ("+count+")"
+    })
+  }
 
-  function prepData(data){
+  function initAvgRank(){
+    console.log("init avg")
+    this.wrap.append("div").attr("class","detail-wrap")
+  }
+
+  //Make an object with one record per review (per person)
+  function makeLongData(data){
 
     var longData = []
     var movies = Object.getOwnPropertyNames(data[1]).slice(2)
 
-    console.log(movies)
     data.forEach(function(d){
-      console.log(d)
       movies.forEach(function(m){
         longData.push({
           person:d["Who are you? "],
@@ -89,23 +117,27 @@ $(document).ready(function() {
         })
       })
     })
+
     longData = longData.filter(function(d){return d.score>=1})
     return longData;
   }
 
+  //Initialize the page
   function initPage(data, tabletop){
-    console.log(data)
-    //prepare the data
-    var longData = prepData(data)
-    console.log(longData)
-    //initialize the histogram
-    dots.init(longData);
+    
+    //make the average ranking chart
+    var longData = makeLongData(data)
+    avgRankChart.init(longData);
 
-    //initialize dataTables
-   // drawTable(clean)
   }
 
-  var dots = webCharts.createChart(".chart", dotsSettings,null);
+  //Set up Avg Rank Chart
+  var avgRankChart = webCharts.createChart("#avgRankChart", avgRankSettings,null);
+
+  avgRankChart.on("init",initAvgRank)
+  avgRankChart.on("resize",axisLabels)
+  
+
   Tabletop.init({ 
     key: public_spreadsheet_url,
     callback: initPage,
