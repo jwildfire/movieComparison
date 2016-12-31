@@ -5,11 +5,12 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
   <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  <script type='text/javascript' src='http://graphics.rhoworld.com/src/webcharts/webcharts.v1.6.0.js'></script>
+  <script type='text/javascript' src='https://cdn.rawgit.com/RhoInc/Webcharts/master/build/webcharts.js'></script>
+  <script src="./build/movieComparison.js" charset="utf-8"></script>
 
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">  
-  <link rel="stylesheet" href="https://graphics.rhoworld.com/src/webcharts/webcharts.v1.4.0.css">
-  <link rel="stylesheet" type="text/css" href="movies.css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/RhoInc/Webcharts/master/css/webcharts.css">
+  <link rel="stylesheet" type="text/css" href="./css/movies.css">
 </head>
 
 <html>
@@ -20,19 +21,20 @@
   
   <h4>Data</h4> 
   12 people filled out a google spreadsheet rating 50 movies on a scale of 1 (worst) to 5 (best). People were instructed to leave rankings blank if they haven't seen the movie. <a href="https://goo.gl/forms/oMmsbm874ns6K8qZ2">Here</a> is a link to the survey (feel free to fill it out to see how you compare!), and <a href="https://docs.google.com/spreadsheets/d/1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU/">here</a> is a link to the results, saved as a google spreadsheet.
-
-  <h4>Hierarchical Clustering</h4>
-  <p> First thing, here is a quick heatmap (<a href="cluster/PHMovies.png">pdf</a>, <a href="cluster/PHMovies.R">R code</a>). The R code was adapted from this <a href="http://sebastianraschka.com/Articles/heatmaps_in_r.html"> nice tutorial.</a></p>
-  <img src="cluster/PHMovies.png" width=1000px>
   
   <h4>Movie Rankings</h4>
   <p>
   This chart shows which movies were the highest rated. You can click a movie to see what everyone gave it. Created with <a href="https://github.com/RhoInc/Webcharts">webcharts</a></p>
-  <div id="avgRankChart"></div>
+  <div class="chart-wrap">
+    <div class="chart" id="avgRankChart">
+      <strong>Movies sorted by average rating</strong>
+    </div>
+    <div class="chart" id="detailChart"> </div>
+  </div>
 
-  <p> More stuff coming someday (?) ... </p>
-
-
+  <h4>Hierarchical Clustering</h4>
+  <p> So, who is actually the most similar? Here is a quick heatmap (<a href="cluster/PHMovies.png">pdf</a>, <a href="cluster/PHMovies.R">R code</a>). Looks like the siblings win! Jeremy and Ben are closest followed by Nadav and Namps. The R code was adapted from this <a href="http://sebastianraschka.com/Articles/heatmaps_in_r.html"> nice tutorial.</a></p>
+  <img src="cluster/PHMovies.png" width=1000px>
 </body>
 </html>
 
@@ -42,105 +44,10 @@ $(document).ready(function() {
   //data URL
   var public_spreadsheet_url = 
   '1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU';
-  
-  ////////////////////////////////
-  //average movie rankings chart
-  ////////////////////////////////
-  var avgRankSettings = {
-    "width":600,
-    "height":800,
-    resizable:false,
-    "x":{
-      "label":"Average Rating with Range",
-      "type":"linear",
-      "column":"score",
-      "format":"0.1f"
-    },
-    "y":{
-      "type":"ordinal",
-      "label":"",
-      "column":"movie",
-      "sort":"total-descending"
-    },
-    "margin":{},
-    "marks":[
-      {
-        "type":"circle",
-        "per":["movie"],
-        "summarizeX":"mean",
-        "attributes":{"fill":"red","stroke":"black", "fill-opacity":0.9}
-      },
-      {
-        "type":"text",
-        "per":["movie"],
-        "summarizeX":"mean",
-        "text":"$x",
-        "attributes":{"text-anchor":"start","dx":"10", "alignment-baseline":"middle"}
-      },
-      {
-        "type":"line",
-        "per":["movie"],
-        "attributes":{"stroke-opacity":0.2, "stroke-dasharray":"3 3", "stroke":"#888"}
-      }
-    ]
-  };
-
-  function axisLabels(){
-    console.log(this)
-    var chart = this;
-    var y_labels = this.svg
-    .select(".y.axis")
-    .selectAll(".tick text")
-    .text(function(d){
-      var count = chart.raw_data.filter(function(e){return d==e.movie}).length
-      return d +" ("+count+")"
-    })
-  }
-
-  function initAvgRank(){
-    console.log("init avg")
-    this.wrap.append("div").attr("class","detail-wrap")
-  }
-
-  //Make an object with one record per review (per person)
-  function makeLongData(data){
-
-    var longData = []
-    var movies = Object.getOwnPropertyNames(data[1]).slice(2)
-
-    data.forEach(function(d){
-      movies.forEach(function(m){
-        longData.push({
-          person:d["Who are you? "],
-          movie:m,
-          score:+d[m]
-        })
-      })
-    })
-
-    longData = longData.filter(function(d){return d.score>=1})
-    return longData;
-  }
-
-  //Initialize the page
-  function initPage(data, tabletop){
-    
-    //make the average ranking chart
-    var longData = makeLongData(data)
-    avgRankChart.init(longData);
-
-  }
-
-  //Set up Avg Rank Chart
-  var avgRankChart = webCharts.createChart("#avgRankChart", avgRankSettings,null);
-
-  avgRankChart.on("init",initAvgRank)
-  avgRankChart.on("resize",axisLabels)
-  
 
   Tabletop.init({ 
     key: public_spreadsheet_url,
-    callback: initPage,
+    callback: movieComparison,
     simpleSheet: true 
   })
 })
