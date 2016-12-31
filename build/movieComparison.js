@@ -217,6 +217,20 @@ var movieComparison = (function () {
 		var controls = webCharts.createControls('.controls', controlsSettings);
 		controls.targets = [avgRankChart, smallMultipleChart];
 		controls.init(longData);
+		console.log(controls);
+
+		var selects = controls.wrap.selectAll("div.control-group").select("select");
+
+		selects.on("change", function (d) {
+			var person1 = selects[0][0].value;
+			var person2 = selects[0][1].value;
+
+			avgRankChart.config.person1 = person1;
+			avgRankChart.config.person2 = person2;
+			avgRankChart.config.marks[1].values.person = person1;
+			avgRankChart.config.marks[2].values.person = person2;
+			avgRankChart.draw();
+		});
 	}
 
 	return initCharts;
