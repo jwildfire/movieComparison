@@ -15,25 +15,18 @@
 
 <html>
 <body>
-  <h2>Movie Comparison</h2>
-  <h4>Overview</h4>
-  <p>My friend Sasha said, "Naama and I have the most similar taste in movies." This is my attempt to prove him wrong (and play with a few graphics/machine learning things over my company's winter break). 
-  
-  <h4>Data</h4> 
-  12 people filled out a google spreadsheet rating 50 movies on a scale of 1 (worst) to 5 (best). People were instructed to leave rankings blank if they haven't seen the movie. <a href="https://goo.gl/forms/oMmsbm874ns6K8qZ2">Here</a> is a link to the survey (feel free to fill it out to see how you compare!), and <a href="https://docs.google.com/spreadsheets/d/1i_W-vL3MXEEh_R3PGs9acXM_6Y4gE2YTCUKnwaxjttU/">here</a> is a link to the results, saved as a google spreadsheet.
-  
-  <h4>Movie Rankings</h4>
-  <p>
-  This chart shows which movies were the highest rated. You can click a movie to see what everyone gave it. Created with <a href="https://github.com/RhoInc/Webcharts">webcharts</a></p>
+  <h2>Movie Comparison </h2>
+  <p>My friend Sasha said, "Naama and I have the most similar taste in movies." This is my attempt to prove him wrong. Sasha and Naama (10 other people) rated 50 movies on a scale of 1 to 5. The top chart shows average ratings for each movie, with Sasha and Naama's ratings highlighted. Small multiples below show individual ratings from each person. Use the controls to compare two people.</p>
   <div class="chart-wrap">
     <div class="chart" id="avgRankChart">
       <strong>Movies sorted by average rating</strong>
     </div>
     <div class="chart" id="detailChart"> </div>
   </div>
-
+  <p>Created with <a href="https://github.com/RhoInc/Webcharts">webcharts</a></p>
   <h4>Hierarchical Clustering</h4>
   <p> So, who is actually the most similar? Here is a quick heatmap (<a href="cluster/PHMovies.png">pdf</a>, <a href="cluster/PHMovies.R">R code</a>). Looks like the siblings win! Jeremy and Ben are closest followed by Nadav and Namps. The R code was adapted from this <a href="http://sebastianraschka.com/Articles/heatmaps_in_r.html"> nice tutorial.</a></p>
+
   <img src="cluster/PHMovies.png" width=1000px>
 </body>
 </html>

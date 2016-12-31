@@ -164,6 +164,7 @@ var movieComparison = (function () {
 			"split": "person",
 			"per": ["score"],
 			"attributes": {
+				"fill": "white",
 				"stroke": "black",
 				"stroke-width": "2px",
 				"style": "clip-path:null"
