@@ -2,16 +2,18 @@
 // movie details chart
 ////////////////////////////////
 const smallMultipleSettings = {
+  "person1":"Jeremy",
+  "person2":"Sasha",
   "width":150,
   "height":150,
-  resizable:false,
+  "resizable":false,
   "x":{
     "label":"Rating",
     "type":"ordinal",
     "column":"score",
     "label":"",
     "format":"0.1f",
-    domain:[1,2,3,4,5]
+    "domain":[1,2,3,4,5]
   },
   "y":{
     "type":"linear",

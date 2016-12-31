@@ -1,8 +1,9 @@
 ////////////////////////////////
 //average movie rankings chart
 ////////////////////////////////
-
 const avgRankSettings = {
+  "person1":"Jeremy",
+  "person2":"Sasha",
   "width":1200,
   "height":350,
   resizable:false,
@@ -11,7 +12,7 @@ const avgRankSettings = {
     "type":"linear",
     "column":"score",
     "format":"0.1f",
-    "domain":[1,5]
+    "domain":[0.8,5]
   },
   "x":{
     "type":"ordinal",
@@ -20,12 +21,13 @@ const avgRankSettings = {
     "sort":"total-descending"
   },
   "margin":{bottom:150,right:75},
-  gridlines:"y",
+  "gridlines":"y",
   "marks":[
     {
       "type":"circle",
       "per":["movie"],
       "summarizeY":"mean",
+      "tooltip": 'The mean score for [movie] was %y',
       "attributes":{
         "fill":"white",
         "stroke":"black", 
@@ -36,6 +38,7 @@ const avgRankSettings = {
       "type":"circle",
       "per":["movie","person"],
       "summarizeY":"mean",
+      "tooltip": '[person] gave [movie] a [score]',
       "attributes":{
         "stroke":"black", 
         "stroke-width":1,
@@ -43,49 +46,35 @@ const avgRankSettings = {
         "fill-opacity":0.5,
         "transform":"translate(2,0)"
       },
-      values:{person:"Sasha"}
+      "values":{"person":null} //set in callback
     },
     {
       "type":"circle",
       "per":["movie","person"],
       "summarizeY":"mean",
+      "tooltip": '[person] gave [movie] a [score]',
       "attributes":{
         "stroke":"black", 
         "stroke-width":1,
         "fill":"blue",
         "fill-opacity":0.5,
-        "transform":"translate(-2,0)"
-
+        "transform":"translate(-2,0)",
       },
-      values:{person:"Namps!"}
-    },
-    {
-      "type":"line",
-      "per":["movie"],
-      "attributes":{
-        "stroke":"black", 
-        "stroke-width":2,
-      },
-      values:{person:["Sasha","Namps!"]}
+      "values":{"person":null} //set in callback
     },   
     {
       "type":"text",
       "per":["movie"],
       "summarizeY":"mean",
       "text":"$y",
+      "tooltip": '[person] gave [movie] a [score]',
       "attributes":{
         "text-anchor":"middle",
         "dy":"-10", 
         "alignment-baseline":"middle",
-        "font-size":8
+        "font-size":8,
       }
     }
-
-    /*{
-      "type":"line",
-      "per":["movie"],
-      "attributes":{"stroke-opacity":0.2, "stroke-dasharray":"3 3", "stroke":"#888"}
-    }*/
   ]
 };
 
