@@ -36,7 +36,7 @@ export default function initCharts(data, tabletop){
   console.log(controls)
 
   var selects = controls.wrap.selectAll("div.control-group").select("select")
-
+  //Update the highlights on both charts when the controls change
   selects.on("change",function(d){
     var person1 = selects[0][0].value
     var person2 = selects[0][1].value
@@ -47,6 +47,8 @@ export default function initCharts(data, tabletop){
     avgRankChart.config.marks[2].values.person = person2
     avgRankChart.draw()
 
-
+    smallMultipleChart.config.person1 = person1
+    smallMultipleChart.config.person2 = person2
+    smallMultipleChart.draw()
   })
 }
