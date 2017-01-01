@@ -4,7 +4,7 @@
 const avgRankSettings = {
   "person1":"Jeremy",
   "person2":"Sasha",
-  "width":1200,
+  "width":600,
   "height":350,
   "resizable":false,
   "y":{

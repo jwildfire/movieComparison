@@ -36,7 +36,7 @@ var movieComparison = (function () {
 	var avgRankSettings = {
 		"person1": "Jeremy",
 		"person2": "Sasha",
-		"width": 1200,
+		"width": 600,
 		"height": 350,
 		"resizable": false,
 		"y": {
@@ -202,10 +202,23 @@ var movieComparison = (function () {
 		avgRankChart.on("layout", avgRankLayout);
 		avgRankChart.init(longData);
 
+		//Small Multiples
+		var movieOrder = d3.nest().key(function (d) {
+			return d.movie;
+		}).rollup(function (d) {
+			return d3.mean(d, function (d) {
+				return d.score;
+			});
+		}).entries(longData).sort(function (a, b) {
+			return b.values - a.values;
+		}).map(function (d) {
+			return d.key;
+		});
+
 		smallMultipleSettings.y.domain = [0, data.length];
 		var smallMultipleChart = webCharts.createChart("#detailChart", smallMultipleSettings, controls);
 		smallMultipleChart.on("resize", smallMultipleResize);
-		webCharts.multiply(smallMultipleChart, longData, "movie");
+		webCharts.multiply(smallMultipleChart, longData, "movie", movieOrder);
 
 		//Make the controls
 		var people = d3.set(longData.map(function (d) {
