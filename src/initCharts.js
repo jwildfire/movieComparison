@@ -18,7 +18,6 @@ export default function initCharts(data, tabletop){
   avgRankChart.on("layout",avgRankLayout)
   avgRankChart.init(longData);
 
-  //Small Multiples
   smallMultipleSettings.y.domain=[0,data.length]
   var smallMultipleChart = webCharts.createChart("#detailChart", smallMultipleSettings,controls);
   smallMultipleChart.on("resize",smallMultipleResize)
@@ -59,13 +58,12 @@ export default function initCharts(data, tabletop){
     .selectAll("g.bar-group")
     .selectAll('rect')
 
-    console.log(rects)
     rects.attr("fill","white")
 
     var person1 = rects.filter(function(d){return d.key == name1})
-    person1.attr("fill","blue")
+    person1.attr("fill","yellow")
 
     var person2 = rects.filter(function(d){return d.key == name2})
-    person2.attr("fill","yellow")  
+    person2.attr("fill","blue")  
   })
 }

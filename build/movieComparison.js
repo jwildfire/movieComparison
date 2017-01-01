@@ -27,7 +27,7 @@ var movieComparison = (function () {
 
 	var controlsSettings = {
 		location: 'top',
-		inputs: [{ type: "dropdown", option: "person1", label: "Person #1", require: true }, { type: "dropdown", option: "person2", label: "Person #2", require: true }]
+		inputs: [{ type: "dropdown", option: "person1", label: "Person #1 (Yellow)", require: true }, { type: "dropdown", option: "person2", label: "Person #2 (Blue)", require: true }]
 	};
 
 	////////////////////////////////
@@ -38,7 +38,7 @@ var movieComparison = (function () {
 		"person2": "Sasha",
 		"width": 1200,
 		"height": 350,
-		resizable: false,
+		"resizable": false,
 		"y": {
 			"label": "Average Rating",
 			"type": "linear",
@@ -183,13 +183,13 @@ var movieComparison = (function () {
 		var person1 = rects.filter(function (d) {
 			return d.key == name1;
 		});
-		person1.attr("fill", "blue");
+		person1.attr("fill", "yellow");
 
 		var name2 = this.config.person2;
 		var person2 = rects.filter(function (d) {
 			return d.key == name2;
 		});
-		person2.attr("fill", "yellow");
+		person2.attr("fill", "blue");
 	}
 
 	function initCharts(data, tabletop) {
@@ -202,7 +202,6 @@ var movieComparison = (function () {
 		avgRankChart.on("layout", avgRankLayout);
 		avgRankChart.init(longData);
 
-		//Small Multiples
 		smallMultipleSettings.y.domain = [0, data.length];
 		var smallMultipleChart = webCharts.createChart("#detailChart", smallMultipleSettings, controls);
 		smallMultipleChart.on("resize", smallMultipleResize);
@@ -238,18 +237,17 @@ var movieComparison = (function () {
 			console.log(mults);
 			var rects = mults.select("svg").select("g").select("g.bar-supergroup").selectAll("g.bar-group").selectAll('rect');
 
-			console.log(rects);
 			rects.attr("fill", "white");
 
 			var person1 = rects.filter(function (d) {
 				return d.key == name1;
 			});
-			person1.attr("fill", "blue");
+			person1.attr("fill", "yellow");
 
 			var person2 = rects.filter(function (d) {
 				return d.key == name2;
 			});
-			person2.attr("fill", "yellow");
+			person2.attr("fill", "blue");
 		});
 	}
 

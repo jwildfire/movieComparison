@@ -6,7 +6,7 @@ const avgRankSettings = {
   "person2":"Sasha",
   "width":1200,
   "height":350,
-  resizable:false,
+  "resizable":false,
   "y":{
     "label":"Average Rating",
     "type":"linear",

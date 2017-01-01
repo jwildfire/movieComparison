@@ -7,11 +7,11 @@ export default function smallMultipleResize(){
 
 	var name1 = this.config.person1
 	var person1 = rects.filter(function(d){return d.key == name1})
-	person1.attr("fill","blue")
+	person1.attr("fill","yellow")
 
 	var name2 = this.config.person2
 	var person2 = rects.filter(function(d){return d.key == name2})
-	person2.attr("fill","yellow")
+	person2.attr("fill","blue")
 
 }
 
