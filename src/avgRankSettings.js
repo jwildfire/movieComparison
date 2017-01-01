@@ -2,9 +2,9 @@
 //average movie rankings chart
 ////////////////////////////////
 const avgRankSettings = {
-  "person1":"Jeremy",
+  "person1":"Namps!",
   "person2":"Sasha",
-  "width":600,
+  "width":900,
   "height":350,
   "resizable":false,
   "y":{

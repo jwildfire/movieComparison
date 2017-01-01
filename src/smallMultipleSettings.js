@@ -4,8 +4,8 @@
 const smallMultipleSettings = {
   "person1":"Jeremy",
   "person2":"Sasha",
-  "width":150,
-  "height":150,
+  "width":100,
+  "height":100,
   "resizable":false,
   "x":{
     "label":"Rating",

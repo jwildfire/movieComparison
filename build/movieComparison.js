@@ -34,9 +34,9 @@ var movieComparison = (function () {
 	//average movie rankings chart
 	////////////////////////////////
 	var avgRankSettings = {
-		"person1": "Jeremy",
+		"person1": "Namps!",
 		"person2": "Sasha",
-		"width": 600,
+		"width": 900,
 		"height": 350,
 		"resizable": false,
 		"y": {
@@ -142,8 +142,8 @@ var movieComparison = (function () {
 	var smallMultipleSettings = {
 		"person1": "Jeremy",
 		"person2": "Sasha",
-		"width": 150,
-		"height": 150,
+		"width": 100,
+		"height": 100,
 		"resizable": false,
 		"x": {
 			"label": "Rating",
