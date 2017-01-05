@@ -37,7 +37,7 @@ my_palette <- colorRampPalette(c("red", "yellow", "green"))(n = 299)
 
 
 # creates a 5 x 5 inch image
-png("/Users/jwildfire/Desktop/PHMovie/PHMovies.png",    # create PNG for the heat map        
+png("/Users/jwildfire/Sites/_personal/movieComparison/cluster/PHMovies.png",    # create PNG for the heat map        
     width = 9*300,        # 5 x 300 pixels
     height = 5*300,
     res = 300,            # 300 pixels per inch
